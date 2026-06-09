@@ -6,11 +6,34 @@ services:
       MYSQL_DATABASE: fanta_db
       MYSQL_ROOT_PASSWORD: fanta
     ports:
-      - "3307:3306" # mappa la porta del container alla stessa porta di codespace
+      - "3307:3306"
     networks:
       - app-network
+    healthcheck: # Controlla che MySQL sia realmente pronto a ricevere connessioni
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pfrancesco"] # aggiusta la password se serve, qui ho usato 'fanta' come sopra:
+      # test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pfanta"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # spring-backend:
+  spring-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring_backend_container
+    ports:
+      - "8080:8080" # Espone l'applicazione all'esterno su Codespaces
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod # Task 2: Attiva il profilo di produzione
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-db:3306/fanta_db?allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=fanta
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      mysql-db:
+        condition: service_healthy # Avvia Spring solo quando il DB ha superato l'healthcheck
+    networks:
+      - app-network
 
 networks:
   app-network:

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dettaglio Calciatore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1a1a1a; 
+            background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), 
+            url('/images/squad3.jpg');
+            
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        .card { border-radius: 15px; border: 2px solid rgba(250, 248, 248, 0.8); }
+        .card-header { border-top-left-radius: 15px !important; border-top-right-radius: 15px !important; padding: 1.2rem; }
+        .label-scheda { color: #4c4c4d; font-size: 0.85rem; text-transform: uppercase; font-weight: 700; }
+        .value-scheda { font-size: 1.1rem; font-weight: 600; color: #212529; }
+        .badge-ruolo { min-width: 140px; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
+    </style>
+</head>
+<body>
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            
+            <div th:if="${conferma}" class="alert alert-success alert-dismissible fade show shadow-sm border-0 mb-4 py-3">
+                <div class="d-flex align-items-center">
+                    <span class="fs-4 me-3"></span>
+                    <div>
+                        <strong class="d-block">Operazione riuscita!</strong>
+                        <span th:text="${conferma}"></span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h2 class="mb-0">Scheda Tecnica</h2>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <div class="label-scheda">Nome Calciatore</div>
+                                <div class="value-scheda fs-2 text-primary" th:text="${p.nome}"></div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <div class="label-scheda">Codice</div>
+                                    <div class="value-scheda" th:text="${p.codice}"></div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="label-scheda">Squadra</div>
+                                    <div class="value-scheda" th:text="${p.squadra}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <div class="label-scheda mb-2">Ruolo</div>
+                            <span th:if="${p.ruolo == 'Portiere'}" class="badge bg-warning text-dark shadow-sm badge-ruolo d-block">Portiere</span>
+                            <span th:if="${p.ruolo == 'Difensore'}" class="badge bg-success shadow-sm badge-ruolo d-block">Difensore</span>
+                            <span th:if="${p.ruolo == 'Centrocampista'}" class="badge bg-primary shadow-sm badge-ruolo d-block">Centrocampista</span>
+                            <span th:if="${p.ruolo == 'Attaccante'}" class="badge bg-danger shadow-sm badge-ruolo d-block">Attaccante</span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4 text-muted">
+
+                    <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 border">
+                        <span class="label-scheda m-0">Quotazione di Mercato</span>
+                        <span class="h3 m-0 text-dark fw-bold">
+                            <span th:text="${p.quotazione}"></span> <small class="text-muted fs-6">FM</small>
+                        </span>
+                    </div>
+                    
+                    <div class="text-center mt-5">
+                        <a th:href="@{/}" class="btn btn-dark btn-lg px-5 shadow-sm">
+                             Torna al Catalogo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
